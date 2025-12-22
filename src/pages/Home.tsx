@@ -57,6 +57,7 @@ const Home = () => {
         category: newTask.taskCategory,
         completed: newTask.taskStatus,
       });
+      setEditingTaskId(null);
     } else {
       addTask({
         task: newTask.taskText,

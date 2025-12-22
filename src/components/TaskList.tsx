@@ -23,7 +23,7 @@ export const TaskList = ({
           <tr>
             <th>#</th>
             <th>Task</th>
-            <th>Toggle Status</th>
+            <th>Task Status</th>
             <th>Category</th>
             <th>Action</th>
           </tr>

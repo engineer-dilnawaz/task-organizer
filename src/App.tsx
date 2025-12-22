@@ -9,13 +9,17 @@ import InCompleted from "./pages/InCompleted";
 
 import Header from "./components/Header";
 import Category from "./pages/Category";
+import { Stats } from "./components/Stats";
 
 const Body = () => {
   return (
-    <>
+    <div className="flex flex-col h-screen overflow-hidden">
       <Header />
-      <Outlet />
-    </>
+      <div className="flex-1 overflow-y-auto overflow-x-hidden scroll-smooth pb-32">
+        <Outlet />
+      </div>
+      <Stats />
+    </div>
   );
 };
 
