@@ -5,7 +5,11 @@ function InCompleted() {
   const tasks = useTasks((state) => state.tasks);
   const taskList = tasks.filter((task) => !task.completed);
 
-  return <TaskList tasks={taskList} />;
+  return (
+    <div className="mx-8">
+      <TaskList tasks={taskList} />
+    </div>
+  );
 }
 
 export default InCompleted;

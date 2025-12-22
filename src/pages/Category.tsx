@@ -33,36 +33,44 @@ function Category() {
     category.name.toLowerCase() === "Uncategorised".toLowerCase();
 
   return (
-    <div className="category-container">
-      <form onSubmit={handleAddCategory} className="task-form">
-        <div className="input-with-error">
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Enter category name"
-            className={`task-input ${
-              isInputEmpty || hasExistingCategory ? "task-input-error" : ""
-            }`}
-          />
-          {hasExistingCategory && (
-            <span className="error">
-              A category with this name already exists.
-            </span>
-          )}
+    <>
+      <div className="card bg-base-300 w-full max-w-sm shrink-0 shadow-2xl mx-auto mt-4">
+        <div className="card-body">
+          <fieldset className="fieldset">
+            <label className="label" htmlFor="category-name-input">
+              Category Name
+            </label>
+            <input
+              id="category-name-input"
+              className={`input outline-none ${
+                hasExistingCategory ? "border-error text-error" : ""
+              }`}
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Enter category name"
+            />
+            {hasExistingCategory && (
+              <span className="text-error">
+                A category with this name already exists.
+              </span>
+            )}
+            <button
+              className="btn btn-neutral mt-4"
+              disabled={isInputEmpty || hasExistingCategory}
+              onClick={handleAddCategory}
+            >
+              Add Category
+            </button>
+          </fieldset>
         </div>
-
-        <button disabled={isInputEmpty || hasExistingCategory} className="btn">
-          {"Add Category"}
-        </button>
-      </form>
-
+      </div>
       <CategoryList
         categories={categories}
         disableDelete={shouldAllowDelete}
         onDelete={handleDeleteCategory}
       />
-    </div>
+    </>
   );
 }
 

@@ -1,10 +1,10 @@
 import { useRef, useState, type FormEvent } from "react";
+import { ConfirmationModal } from "../components/ConfirmationModal";
 import { TaskForm } from "../components/TaskForm";
 import { TaskList } from "../components/TaskList";
 import type { Task } from "../contexts/Tasks/Tasks";
 import { useCategoires } from "../stores/useCategories";
 import { useTasks } from "../stores/useTasks";
-import { ConfirmationModal } from "../components/ConfirmationModal";
 
 export type NewTask = {
   taskText: string;
@@ -20,6 +20,7 @@ const Home = () => {
   const addTask = useTasks((state) => state.addTask);
   const editTask = useTasks((state) => state.editTask);
   const modalRef = useRef<HTMLDialogElement>(null);
+  const [deletingTaskId, setDeletingTaskId] = useState<string | null>(null);
 
   const [newTask, setNewTask] = useState<NewTask>({
     taskText: "",
@@ -71,10 +72,17 @@ const Home = () => {
     });
   };
 
-  const handleDelete = (taskId: string) => {
-    console.log(taskId);
+  const handleDeleteConfirmation = (taskId: string) => {
     modalRef.current?.showModal();
-    // deleteTask(taskId);
+    setDeletingTaskId(taskId);
+  };
+
+  const handleDeleteTask = () => {
+    if (deletingTaskId) {
+      deleteTask(deletingTaskId);
+      setDeletingTaskId(null);
+      modalRef.current?.close();
+    }
   };
 
   const handleToggleCompletion = (taskId: string) => {
@@ -82,6 +90,15 @@ const Home = () => {
   };
 
   const handleEdit = (editingTask: Task) => {
+    if (editingTask.id === editingTaskId) {
+      setEditingTaskId(null);
+      setNewTask({
+        taskCategory: DEFAULT_CATEGORY,
+        taskStatus: false,
+        taskText: "",
+      });
+      return;
+    }
     setEditingTaskId(editingTask.id);
     setNewTask({
       taskCategory: editingTask.category,
@@ -99,56 +116,17 @@ const Home = () => {
         setNewTaskStatus={setNewTaskStatus}
         onAddNewTask={handleAddNewTask}
         categoriesList={categories}
-        isEditMode={!!editingTaskId}
+        isEditMode={Boolean(editingTaskId)}
       />
-
-      {/* <div className="stats-container">
-        <p>
-          Completed:{" "}
-          <strong className="stats-count">{compeletedTasksCount}</strong>
-        </p>
-        <p>
-          Incompleted:{" "}
-          <strong className="stats-count">{inCompeletedTasksCount}</strong>
-        </p>
-      </div> */}
-      {/* <motion.button
-        whileHover={{
-          scale: 1.1,
-          backgroundColor: "red",
-          color: "#fff",
-          transition: {
-            duration: 0.3,
-            type: "spring",
-          },
-        }}
-        className="btn clear-completed"
-        onClick={clearCompleted}
-      >
-        Clear Completed
-      </motion.button> */}
-
-      {/* <select
-        id="category"
-        name="category"
-        className="btn"
-        onChange={(e) => setFilterByCategory(e.target.value)}
-        value={filterByCategory}
-      >
-        {categories.map((category) => (
-          <option key={category.id} value={category.name}>
-            {category.name}
-          </option>
-        ))}
-      </select> */}
 
       <TaskList
         tasks={tasks}
         onToggle={handleToggleCompletion}
-        onDelete={handleDelete}
+        onDelete={handleDeleteConfirmation}
         onEdit={handleEdit}
+        editingTaskId={editingTaskId}
       />
-      <ConfirmationModal />
+      <ConfirmationModal ref={modalRef} onDelete={handleDeleteTask} />
     </div>
   );
 };

@@ -6,6 +6,7 @@ type TaskListProps = {
   onToggle?: (taskId: string) => void;
   onDelete?: (taskId: string) => void;
   onEdit?: (editingTask: TaskType) => void;
+  editingTaskId: string | null;
 };
 
 export const TaskList = ({
@@ -13,6 +14,7 @@ export const TaskList = ({
   onEdit,
   onDelete,
   onToggle,
+  editingTaskId,
 }: TaskListProps) => {
   return (
     <div className="overflow-x-auto w-full bg-base-200 mt-8">
@@ -26,6 +28,7 @@ export const TaskList = ({
             <th>Action</th>
           </tr>
         </thead>
+
         <tbody>
           {tasks.map((task, index) => (
             <Task
@@ -35,6 +38,7 @@ export const TaskList = ({
               onToggle={onToggle}
               onDelete={onDelete}
               onEdit={onEdit}
+              editingTaskId={editingTaskId}
             />
           ))}
         </tbody>

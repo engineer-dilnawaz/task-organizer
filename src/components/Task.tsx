@@ -1,4 +1,4 @@
-import { FilePenLine, Trash } from "lucide-react";
+import { FilePenLine, Trash, X } from "lucide-react";
 import type { Task as TaskType } from "../contexts/Tasks/Tasks";
 
 type TaskProps = {
@@ -7,6 +7,7 @@ type TaskProps = {
   onToggle?: (taskId: string) => void;
   onDelete?: (taskId: string) => void;
   onEdit?: (editingTask: TaskType) => void;
+  editingTaskId: string | null;
 };
 
 export const Task = ({
@@ -15,13 +16,14 @@ export const Task = ({
   onEdit,
   onToggle,
   onDelete,
+  editingTaskId,
 }: TaskProps) => {
   return (
     <tr>
       <th>{index + 1}</th>
       <td>{task.task}</td>
       <td>
-        <label className="label">
+        <label className="label tooltip" data-tip="Toggle Completion">
           <input
             type="checkbox"
             className="checkbox checkbox-primary"
@@ -35,7 +37,8 @@ export const Task = ({
       <td>{task.category}</td>
       <td>
         <button
-          className="btn btn-ghost m-0"
+          className="btn btn-ghost m-0 tooltip"
+          data-tip="Delete Task"
           onClick={(e) => {
             e.stopPropagation();
             onDelete?.(task.id);
@@ -44,13 +47,18 @@ export const Task = ({
           <Trash className="text-red-600" />
         </button>
         <button
-          className="btn btn-ghost m-0"
+          className="btn btn-ghost m-0 tooltip"
+          data-tip={editingTaskId === task.id ? "Cancel Edit" : "Edit Task"}
           onClick={(e) => {
             e.stopPropagation();
             onEdit?.(task);
           }}
         >
-          <FilePenLine className="text-primary" />
+          {editingTaskId === task.id ? (
+            <X />
+          ) : (
+            <FilePenLine className="text-primary" />
+          )}
         </button>
       </td>
     </tr>

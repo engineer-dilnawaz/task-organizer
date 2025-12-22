@@ -4,11 +4,15 @@ export const ThemeSwitch = () => {
   const isDark = useTheme().isDark;
   const toggleTheme = useTheme().toggleTheme;
   return (
-    <label className="swap swap-rotate">
+    <label
+      className="swap swap-rotate tooltip tooltip-left"
+      data-tip="Toggle Theme"
+    >
       <input
         type="checkbox"
+        className="theme-controller"
         onChange={toggleTheme}
-        value={isDark ? "on" : "off"}
+        value={isDark ? "dark" : "light"}
       />
       <svg
         className="swap-on h-8 w-8 fill-current"

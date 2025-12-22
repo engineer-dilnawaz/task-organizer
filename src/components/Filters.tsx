@@ -1,29 +1,19 @@
-import { X } from "lucide-react";
-
 export const Filters = () => {
   return (
-    <form>
+    <form className="filter">
+      <input className="btn btn-square" type="reset" value="×" />
       <input
-        className="btn"
-        type="checkbox"
+        className="btn btn-sm"
+        type="radio"
         name="frameworks"
-        aria-label="Svelte"
+        aria-label="Completed"
       />
       <input
-        className="btn"
-        type="checkbox"
+        className="btn btn-sm"
+        type="radio"
         name="frameworks"
-        aria-label="Vue"
+        aria-label="Incomplete"
       />
-      <input
-        className="btn"
-        type="checkbox"
-        name="frameworks"
-        aria-label="React"
-      />
-      <button type="reset" className="btn btn-square">
-        <X color="#ffffff" />
-      </button>
     </form>
   );
 };

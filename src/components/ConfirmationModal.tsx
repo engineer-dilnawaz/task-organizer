@@ -3,17 +3,25 @@ import { forwardRef } from "react";
 
 type ConfirmationModalProps = {
   title?: string;
+  message?: string;
+  onDelete?: () => void;
 };
 
 export const ConfirmationModal = forwardRef<
   HTMLDialogElement,
   ConfirmationModalProps
->((props, ref) => {
+>((_props, ref) => {
+  const handleBackdropClick = (e: React.MouseEvent<HTMLDialogElement>) => {
+    if (e.target === e.currentTarget) {
+      const dialog = e.currentTarget;
+      dialog.close();
+    }
+  };
+
   return (
-    <dialog ref={ref} className="modal">
+    <dialog ref={ref} className="modal" onClick={handleBackdropClick}>
       <div className="modal-box">
         <form method="dialog">
-          {/* Native <form method="dialog"> handles closing automatically */}
           <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
             <X className="text-white" />
           </button>
@@ -25,8 +33,13 @@ export const ConfirmationModal = forwardRef<
         </p>
         <div className="modal-action">
           <form method="dialog">
-            <button className="btn">Cancel</button>
-            <button className="btn btn-error ml-2">Delete</button>
+            <button className="btn btn-ghost">Cancel</button>
+            <button
+              className="btn btn-error"
+              onClick={() => _props.onDelete?.()}
+            >
+              Delete
+            </button>
           </form>
         </div>
       </div>

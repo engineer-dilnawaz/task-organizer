@@ -62,7 +62,7 @@ export const TaskForm = ({
       </div>
 
       <button className="btn btn-neutral mt-4 w-full" type="submit">
-        {isEditMode ? " Add Task" : "Edit Task"}
+        {isEditMode ? "Update Task" : "Add Task"}
       </button>
     </form>
   );
