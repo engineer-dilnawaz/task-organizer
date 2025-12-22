@@ -5,7 +5,7 @@ type TaskListProps = {
   tasks: TaskType[];
   onToggle?: (taskId: string) => void;
   onDelete?: (taskId: string) => void;
-  onEdit?: (taskId: string, task: string) => void;
+  onEdit?: (editingTask: TaskType) => void;
 };
 
 export const TaskList = ({
@@ -15,22 +15,30 @@ export const TaskList = ({
   onToggle,
 }: TaskListProps) => {
   return (
-    <ul className="task-list">
-      {tasks.length === 0 ? (
-        <p>Oops No tasks added yet..</p>
-      ) : (
-        tasks.map((task) => {
-          return (
+    <div className="overflow-x-auto w-full bg-base-200 mt-8">
+      <table className="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Task</th>
+            <th>Toggle Status</th>
+            <th>Category</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {tasks.map((task, index) => (
             <Task
               key={task.id}
+              index={index}
               task={task}
               onToggle={onToggle}
               onDelete={onDelete}
               onEdit={onEdit}
             />
-          );
-        })
-      )}
-    </ul>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 };

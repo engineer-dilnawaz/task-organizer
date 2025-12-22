@@ -11,9 +11,9 @@ type Task = {
 
 type TasksType = {
   tasks: Task[];
-  addTask: (task: string, category?: string) => void;
+  addTask: (newTask: Omit<Partial<Task>, "id"> & Pick<Task, "task">) => void;
   deleteTask: (taskId: string) => void;
-  editTask: (taskId: string, task: string, category?: string) => void;
+  editTask: (taskId: string, editTask: Omit<Task, "id">) => void;
   clearCompleted: () => void;
   toggleTaskCompletion: (taskId: string) => void;
 };
@@ -22,14 +22,14 @@ const useTasks = create<TasksType>()(
   persist(
     (set) => ({
       tasks: [],
-      addTask: (task, category = "Uncategorised") =>
+      addTask: (newTask: Omit<Partial<Task>, "id"> & Pick<Task, "task">) =>
         set((state) => ({
           tasks: [
             {
-              task,
               id: crypto.randomUUID(),
-              completed: false,
-              category: category,
+              completed: newTask?.completed ?? false,
+              category: newTask?.category ?? "Uncategorised",
+              task: newTask.task,
             },
             ...state.tasks,
           ],
@@ -38,14 +38,15 @@ const useTasks = create<TasksType>()(
         set((state) => ({
           tasks: state.tasks.filter((item) => item.id !== taskId),
         })),
-      editTask: (taskId, task, category) =>
+      editTask: (taskId, editTask: Omit<Task, "id">) =>
         set((state) => ({
           tasks: state.tasks.map((taskItem) =>
             taskId === taskItem.id
               ? {
                   ...taskItem,
-                  task,
-                  category: category ? category : taskItem.category,
+                  task: editTask.task,
+                  category: editTask.category,
+                  completed: editTask.completed,
                 }
               : taskItem
           ),

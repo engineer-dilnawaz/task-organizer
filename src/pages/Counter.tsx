@@ -3,10 +3,27 @@ import { useState } from "react";
 function Counter() {
   const [count, setCount] = useState(0);
   return (
-    <div className="calc-container">
-      <button onClick={() => setCount((prev) => prev + 1)}>+</button>
-      <p>{count}</p>
-      <button onClick={() => setCount((prev) => prev - 1)}>-</button>
+    <div className="flex items-center gap-2 justify-center mt-4">
+      <button
+        className="btn btn-soft"
+        onClick={() => setCount((prev) => prev + 1)}
+      >
+        +
+      </button>
+
+      <span className="countdown font-mono text-6xl">
+        <span
+          style={{ "--value": count, "--digits": 2 }}
+          aria-live="polite"
+          aria-label={count}
+        ></span>
+      </span>
+      <button
+        className="btn btn-soft"
+        onClick={() => setCount((prev) => prev - 1)}
+      >
+        -
+      </button>
     </div>
   );
 }

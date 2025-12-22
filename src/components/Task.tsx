@@ -1,46 +1,58 @@
+import { FilePenLine, Trash } from "lucide-react";
 import type { Task as TaskType } from "../contexts/Tasks/Tasks";
 
 type TaskProps = {
+  index: number;
   task: TaskType;
   onToggle?: (taskId: string) => void;
   onDelete?: (taskId: string) => void;
-  onEdit?: (taskId: string, task: string) => void;
+  onEdit?: (editingTask: TaskType) => void;
 };
 
-export const Task = ({ task, onEdit, onToggle, onDelete }: TaskProps) => {
+export const Task = ({
+  index,
+  task,
+  onEdit,
+  onToggle,
+  onDelete,
+}: TaskProps) => {
   return (
-    <li
-      className={`task-container ${
-        task.completed ? "task-container-completed" : ""
-      }`}
-      onClick={() => onToggle?.(task.id)}
-    >
-      <p
-        role="button"
-        className={`task ${task.completed ? "task-completed" : ""}`}
-      >
-        {task.task}
-      </p>
-      <div className="action-container">
+    <tr>
+      <th>{index + 1}</th>
+      <td>{task.task}</td>
+      <td>
+        <label className="label">
+          <input
+            type="checkbox"
+            className="checkbox checkbox-primary"
+            checked={task.completed}
+            onChange={() => onToggle?.(task.id)}
+          />
+          {task.completed ? "Completed" : "Incomplete"}
+        </label>
+      </td>
+
+      <td>{task.category}</td>
+      <td>
         <button
+          className="btn btn-ghost m-0"
           onClick={(e) => {
             e.stopPropagation();
             onDelete?.(task.id);
           }}
-          className="action-btn"
         >
-          ❌
+          <Trash className="text-red-600" />
         </button>
         <button
-          className="action-btn"
+          className="btn btn-ghost m-0"
           onClick={(e) => {
             e.stopPropagation();
-            onEdit?.(task.id, task.task);
+            onEdit?.(task);
           }}
         >
-          ✏️
+          <FilePenLine className="text-primary" />
         </button>
-      </div>
-    </li>
+      </td>
+    </tr>
   );
 };

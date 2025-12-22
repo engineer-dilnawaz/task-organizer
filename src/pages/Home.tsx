@@ -1,87 +1,108 @@
-import { useState, type FormEvent } from "react";
-import { motion } from "motion/react";
+import { useRef, useState, type FormEvent } from "react";
+import { TaskForm } from "../components/TaskForm";
 import { TaskList } from "../components/TaskList";
-import { useTasks } from "../stores/useTasks";
+import type { Task } from "../contexts/Tasks/Tasks";
 import { useCategoires } from "../stores/useCategories";
+import { useTasks } from "../stores/useTasks";
+import { ConfirmationModal } from "../components/ConfirmationModal";
+
+export type NewTask = {
+  taskText: string;
+  taskCategory: string;
+  taskStatus: boolean;
+};
+
+const DEFAULT_CATEGORY = "Uncategorised";
 
 const Home = () => {
-  const [input, setInput] = useState("");
-  const [category, setCategory] = useState("Uncategorised");
-  const [filterByCategory, setFilterByCategory] = useState("Uncategorised");
   const [editingTaskId, setEditingTaskId] = useState<string | null>(null);
   const tasks = useTasks((state) => state.tasks);
   const addTask = useTasks((state) => state.addTask);
   const editTask = useTasks((state) => state.editTask);
+  const modalRef = useRef<HTMLDialogElement>(null);
+
+  const [newTask, setNewTask] = useState<NewTask>({
+    taskText: "",
+    taskCategory: DEFAULT_CATEGORY,
+    taskStatus: false,
+  });
+
   const deleteTask = useTasks((state) => state.deleteTask);
   const toggleTaskCompletion = useTasks((state) => state.toggleTaskCompletion);
-  const clearCompleted = useTasks((state) => state.clearCompleted);
+
   const categories = useCategoires((state) => state.categories);
 
-  const filteredTasks = tasks.filter(
-    (task) => task.category === filterByCategory
-  );
+  const setNewTaskText = (text: string) => {
+    setNewTask((prev) => ({ ...prev, taskText: text }));
+  };
 
-  const isInputEmpty = !input.trim();
-  const compeletedTasksCount = tasks.filter((task) => task.completed).length;
-  const inCompeletedTasksCount = tasks.filter((task) => !task.completed).length;
+  const setNewTaskCategory = (category: string) => {
+    setNewTask((prev) => ({ ...prev, taskCategory: category }));
+  };
 
-  const handleAddTask = (event: FormEvent<HTMLFormElement>) => {
+  const setNewTaskStatus = (status: boolean) => {
+    setNewTask((prev) => ({ ...prev, taskStatus: status }));
+  };
+
+  const handleAddNewTask = (event: FormEvent) => {
     event.preventDefault();
-    if (!input.trim()) {
+    if (!newTask.taskText.trim()) {
       return;
     }
+
     if (editingTaskId) {
-      editTask(editingTaskId, input, category);
-      setEditingTaskId(null);
+      editTask(editingTaskId, {
+        task: newTask.taskText,
+        category: newTask.taskCategory,
+        completed: newTask.taskStatus,
+      });
     } else {
-      addTask(input, category);
+      addTask({
+        task: newTask.taskText,
+        category: newTask.taskCategory,
+        completed: newTask.taskStatus,
+      });
     }
-    setInput("");
+
+    setNewTask({
+      taskCategory: DEFAULT_CATEGORY,
+      taskStatus: false,
+      taskText: "",
+    });
   };
 
   const handleDelete = (taskId: string) => {
-    deleteTask(taskId);
+    console.log(taskId);
+    modalRef.current?.showModal();
+    // deleteTask(taskId);
   };
 
   const handleToggleCompletion = (taskId: string) => {
     toggleTaskCompletion(taskId);
   };
 
-  const handleEdit = (taskId: string, task: string) => {
-    setEditingTaskId(taskId);
-    setInput(task);
+  const handleEdit = (editingTask: Task) => {
+    setEditingTaskId(editingTask.id);
+    setNewTask({
+      taskCategory: editingTask.category,
+      taskStatus: editingTask.completed,
+      taskText: editingTask.task,
+    });
   };
 
   return (
-    <div className="tasks-container">
-      <form onSubmit={handleAddTask} className="task-form">
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Jot Down your task"
-          className={`task-input ${isInputEmpty ? "task-input-error" : ""}`}
-        />
+    <div className="flex flex-col items-center mt-4 mx-8">
+      <TaskForm
+        newTask={newTask}
+        setNewTaskText={setNewTaskText}
+        setNewTaskCategory={setNewTaskCategory}
+        setNewTaskStatus={setNewTaskStatus}
+        onAddNewTask={handleAddNewTask}
+        categoriesList={categories}
+        isEditMode={!!editingTaskId}
+      />
 
-        <button disabled={isInputEmpty} className="btn">
-          {editingTaskId ? "Edit Task" : "Add Task"}
-        </button>
-      </form>
-
-      <select
-        id="category"
-        name="category"
-        className="task-input"
-        value={category}
-        onChange={(e) => setCategory(e.target.value)}
-      >
-        {categories.map((category) => (
-          <option key={category.id} value={category.name}>
-            {category.name}
-          </option>
-        ))}
-      </select>
-      <div className="stats-container">
+      {/* <div className="stats-container">
         <p>
           Completed:{" "}
           <strong className="stats-count">{compeletedTasksCount}</strong>
@@ -90,8 +111,8 @@ const Home = () => {
           Incompleted:{" "}
           <strong className="stats-count">{inCompeletedTasksCount}</strong>
         </p>
-      </div>
-      <motion.button
+      </div> */}
+      {/* <motion.button
         whileHover={{
           scale: 1.1,
           backgroundColor: "red",
@@ -105,9 +126,9 @@ const Home = () => {
         onClick={clearCompleted}
       >
         Clear Completed
-      </motion.button>
+      </motion.button> */}
 
-      <select
+      {/* <select
         id="category"
         name="category"
         className="btn"
@@ -119,14 +140,15 @@ const Home = () => {
             {category.name}
           </option>
         ))}
-      </select>
+      </select> */}
 
       <TaskList
-        tasks={filteredTasks}
+        tasks={tasks}
         onToggle={handleToggleCompletion}
         onDelete={handleDelete}
         onEdit={handleEdit}
       />
+      <ConfirmationModal />
     </div>
   );
 };
