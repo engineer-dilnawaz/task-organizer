@@ -2,9 +2,12 @@ import { useState, type FormEvent } from "react";
 import { motion } from "motion/react";
 import { TaskList } from "../components/TaskList";
 import { useTasks } from "../stores/useTasks";
+import { useCategoires } from "../stores/useCategories";
 
 const Home = () => {
   const [input, setInput] = useState("");
+  const [category, setCategory] = useState("Uncategorised");
+  const [filterByCategory, setFilterByCategory] = useState("Uncategorised");
   const [editingTaskId, setEditingTaskId] = useState<string | null>(null);
   const tasks = useTasks((state) => state.tasks);
   const addTask = useTasks((state) => state.addTask);
@@ -12,6 +15,12 @@ const Home = () => {
   const deleteTask = useTasks((state) => state.deleteTask);
   const toggleTaskCompletion = useTasks((state) => state.toggleTaskCompletion);
   const clearCompleted = useTasks((state) => state.clearCompleted);
+  const categories = useCategoires((state) => state.categories);
+
+  const filteredTasks = tasks.filter(
+    (task) => task.category === filterByCategory
+  );
+
   const isInputEmpty = !input.trim();
   const compeletedTasksCount = tasks.filter((task) => task.completed).length;
   const inCompeletedTasksCount = tasks.filter((task) => !task.completed).length;
@@ -22,10 +31,10 @@ const Home = () => {
       return;
     }
     if (editingTaskId) {
-      editTask(editingTaskId, input);
+      editTask(editingTaskId, input, category);
       setEditingTaskId(null);
     } else {
-      addTask(input);
+      addTask(input, category);
     }
     setInput("");
   };
@@ -59,6 +68,19 @@ const Home = () => {
         </button>
       </form>
 
+      <select
+        id="category"
+        name="category"
+        className="task-input"
+        value={category}
+        onChange={(e) => setCategory(e.target.value)}
+      >
+        {categories.map((category) => (
+          <option key={category.id} value={category.name}>
+            {category.name}
+          </option>
+        ))}
+      </select>
       <div className="stats-container">
         <p>
           Completed:{" "}
@@ -85,8 +107,22 @@ const Home = () => {
         Clear Completed
       </motion.button>
 
+      <select
+        id="category"
+        name="category"
+        className="btn"
+        onChange={(e) => setFilterByCategory(e.target.value)}
+        value={filterByCategory}
+      >
+        {categories.map((category) => (
+          <option key={category.id} value={category.name}>
+            {category.name}
+          </option>
+        ))}
+      </select>
+
       <TaskList
-        tasks={tasks}
+        tasks={filteredTasks}
         onToggle={handleToggleCompletion}
         onDelete={handleDelete}
         onEdit={handleEdit}

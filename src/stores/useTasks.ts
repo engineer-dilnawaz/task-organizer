@@ -6,13 +6,14 @@ type Task = {
   id: string;
   task: string;
   completed: boolean;
+  category: string;
 };
 
 type TasksType = {
   tasks: Task[];
-  addTask: (task: string) => void;
+  addTask: (task: string, category?: string) => void;
   deleteTask: (taskId: string) => void;
-  editTask: (taskId: string, task: string) => void;
+  editTask: (taskId: string, task: string, category?: string) => void;
   clearCompleted: () => void;
   toggleTaskCompletion: (taskId: string) => void;
 };
@@ -21,13 +22,14 @@ const useTasks = create<TasksType>()(
   persist(
     (set) => ({
       tasks: [],
-      addTask: (task) =>
+      addTask: (task, category = "Uncategorised") =>
         set((state) => ({
           tasks: [
             {
               task,
               id: crypto.randomUUID(),
               completed: false,
+              category: category,
             },
             ...state.tasks,
           ],
@@ -36,10 +38,16 @@ const useTasks = create<TasksType>()(
         set((state) => ({
           tasks: state.tasks.filter((item) => item.id !== taskId),
         })),
-      editTask: (taskId, task) =>
+      editTask: (taskId, task, category) =>
         set((state) => ({
           tasks: state.tasks.map((taskItem) =>
-            taskId === taskItem.id ? { ...taskItem, task } : taskItem
+            taskId === taskItem.id
+              ? {
+                  ...taskItem,
+                  task,
+                  category: category ? category : taskItem.category,
+                }
+              : taskItem
           ),
         })),
       clearCompleted: () =>

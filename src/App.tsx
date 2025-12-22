@@ -9,6 +9,7 @@ import All from "./pages/All";
 
 import { ThemeToggler } from "./components/ThemeToggler";
 import { useTheme } from "./stores/useTheme";
+import Category from "./pages/Category";
 
 const NavBar = () => {
   const { isDark } = useTheme();
@@ -17,6 +18,7 @@ const NavBar = () => {
       <Link to="/">📋Oraganizer</Link>
 
       <div className="nav-list">
+        <Link to="/category">Category</Link>
         <Link to="/all">All</Link>
         <Link to="/completed">Completed</Link>
         <Link to="/incompleted">InCompleted</Link>
@@ -62,6 +64,10 @@ function App() {
         {
           path: "/counter",
           element: <Counter />,
+        },
+        {
+          path: "/category",
+          element: <Category />,
         },
       ],
     },

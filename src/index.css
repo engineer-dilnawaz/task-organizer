@@ -33,9 +33,11 @@ a {
 }
 
 .task-form {
+  flex: 1;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
+  
 }
 
 .task-form input {
@@ -166,4 +168,77 @@ a {
   /* transition: all 0.3s linear; */
 }
 
+.category-container {
+  background-color: gainsboro;
+  display: flex;
+  flex-direction: column;
+  max-width: 60vw;
+  margin-inline: auto;
+  padding-inline: .5rem;
+  padding-block: 1rem;
+}
 
+
+
+.input-with-error {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.error {
+  color: red;
+  font-size: 13px;
+  margin-top: 3px;
+  margin-left: 3px;
+}
+
+.categories-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  
+}
+
+.category-item {
+  color: black;
+  font-size: 16px;
+  font-weight: 400;
+  font-family: sans-serif;
+  text-transform: capitalize;
+  background-color: #fff;
+  padding-block: 1rem;
+  padding-inline: 0.5rem;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.category-item button {
+  border: unset;
+  background: unset;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.category-item .disabled-button:hover{
+  cursor: not-allowed;
+}
+
+.category-item:hover{
+  background-color: whitesmoke;
+}
+
+.trash {
+  
+  
+}
