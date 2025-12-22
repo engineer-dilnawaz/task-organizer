@@ -7,7 +7,7 @@ type TaskProps = {
   onToggle?: (taskId: string) => void;
   onDelete?: (taskId: string) => void;
   onEdit?: (editingTask: TaskType) => void;
-  editingTaskId: string | null;
+  editingTaskId?: string | null;
 };
 
 export const Task = ({
