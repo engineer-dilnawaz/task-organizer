@@ -39,7 +39,7 @@ const useTasks = create<TasksType>()(
       editTask: (taskId, task) =>
         set((state) => ({
           tasks: state.tasks.map((taskItem) =>
-            taskId !== taskItem.id ? { ...taskItem, task } : taskItem
+            taskId === taskItem.id ? { ...taskItem, task } : taskItem
           ),
         })),
       clearCompleted: () =>

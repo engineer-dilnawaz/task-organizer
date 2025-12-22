@@ -6,14 +6,12 @@ import { useTasks } from "../stores/useTasks";
 const Home = () => {
   const [input, setInput] = useState("");
   const [editingTaskId, setEditingTaskId] = useState<string | null>(null);
-  const {
-    tasks,
-    addTask,
-    editTask,
-    deleteTask,
-    toggleTaskCompletion,
-    clearCompleted,
-  } = useTasks();
+  const tasks = useTasks((state) => state.tasks);
+  const addTask = useTasks((state) => state.addTask);
+  const editTask = useTasks((state) => state.editTask);
+  const deleteTask = useTasks((state) => state.deleteTask);
+  const toggleTaskCompletion = useTasks((state) => state.toggleTaskCompletion);
+  const clearCompleted = useTasks((state) => state.clearCompleted);
   const isInputEmpty = !input.trim();
   const compeletedTasksCount = tasks.filter((task) => task.completed).length;
   const inCompeletedTasksCount = tasks.filter((task) => !task.completed).length;
