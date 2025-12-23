@@ -13,9 +13,14 @@ function Counter() {
 
       <span className="countdown font-mono text-6xl">
         <span
-          style={{ "--value": count, "--digits": 2 }}
+          style={
+            {
+              "--value": count,
+              "--digits": 2,
+            } as React.CSSProperties
+          }
           aria-live="polite"
-          aria-label={count}
+          aria-label={count.toString()}
         ></span>
       </span>
       <button
