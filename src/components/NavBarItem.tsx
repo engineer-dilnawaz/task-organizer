@@ -1,13 +1,13 @@
 import { Link } from "react-router";
 
-type NavBarItemProps = {
+type NavbarItemProps = {
   to: `/${string}`;
   title: string;
   onClick?: () => void;
   isNew?: boolean;
 };
 
-export const NavbarItem = ({ to, title, onClick, isNew }: NavBarItemProps) => {
+export const NavbarItem = ({ to, title, onClick, isNew }: NavbarItemProps) => {
   return (
     <li className="">
       <Link

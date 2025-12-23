@@ -1,6 +1,5 @@
 import { navbarList } from "../constants/navbar";
-
-import { NavbarItem } from "./NavBarItem";
+import { NavbarItem } from "./NavbarItem";
 
 type NavbarListProps = {
   onLinkClick: () => void;
