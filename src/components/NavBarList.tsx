@@ -1,23 +1,24 @@
-import { Link } from "react-router";
+import { navbarList } from "../constants/navbar";
+import { NavBarItem } from "./NavBarItem";
 
-type NavBarItemProps = {
-  to: `/${string}`;
-  title: string;
-  onClick?: () => void;
+type NavbarListProps = {
+  onLinkClick: () => void;
 };
 
-export const NavBarItem = ({ to, title, onClick }: NavBarItemProps) => {
+export const NavbarList = ({ onLinkClick }: NavbarListProps) => {
   return (
-    <li>
-      <Link
-        to={to}
-        onClick={() => {
-          // Blur button to close dropdown, but don't prevent navigation
-          onClick?.();
-        }}
-      >
-        {title}
-      </Link>
-    </li>
+    <ul
+      tabIndex={-1}
+      className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+    >
+      {navbarList.map((navbarItem) => (
+        <NavBarItem
+          key={navbarItem.to}
+          to={navbarItem.to}
+          title={navbarItem.title}
+          onClick={onLinkClick}
+        />
+      ))}
+    </ul>
   );
 };

@@ -36,9 +36,7 @@ export const useCategoires = create<CategoryType>()(
       deleteCategory: (id) =>
         set((state) => {
           if (id === "1")
-            throw new Error(
-              "This is read only category. You cannot delete it "
-            );
+            throw new Error("This is read only category. You cannot delete it");
           else {
             const filteredCategory = state.categories.find(
               (cat) => cat.id === id
@@ -50,13 +48,7 @@ export const useCategoires = create<CategoryType>()(
                   (task) => task.category === filteredCategory.name
                 );
               allFilteredTasks.forEach((filteredTask) => {
-                useTasks
-                  .getState()
-                  .editTask(
-                    filteredTask.id,
-                    filteredTask.task,
-                    "Uncategorised"
-                  );
+                useTasks.getState().editTask(filteredTask.id, filteredTask);
               });
             }
             return {
