@@ -25,6 +25,10 @@ export default function ListItem({ task }: ListItemProps) {
       key={task.id}
       className={`bg-base-200 p-2 rounded-box flex justify-between items-center cursor-grab ${
         isDragging ? "opacity-75" : ""
+      } ${
+        task.completed
+          ? "animate-slide-to-completed"
+          : "animate-slide-to-incompleted"
       }`}
     >
       <span>{task.task}</span>

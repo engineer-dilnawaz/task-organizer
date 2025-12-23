@@ -46,7 +46,7 @@ export default function ListContainer({
         ))}
         {listItems.length === 0 && (
           <div className="text-center text-base-content/60 py-4 text-sm">
-            Drag a task here
+            <kbd className="kbd">Drag a task here</kbd>
           </div>
         )}
       </div>

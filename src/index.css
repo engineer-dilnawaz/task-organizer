@@ -1,2 +1,32 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+@keyframes slide-to-completed {
+  from {
+    opacity: 0.2;
+    transform: translateX(-24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-to-incompleted {
+  from {
+    opacity: 0.2;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-to-completed {
+  animation: slide-to-completed 0.35s ease-out;
+}
+
+.animate-slide-to-incompleted {
+  animation: slide-to-incompleted 0.35s ease-out;
+}
