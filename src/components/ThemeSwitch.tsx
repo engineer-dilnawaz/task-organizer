@@ -1,8 +1,16 @@
 import { useTheme } from "../stores/useTheme";
+import { useEffect } from "react";
 
 export const ThemeSwitch = () => {
   const isDark = useTheme().isDark;
   const toggleTheme = useTheme().toggleTheme;
+
+  useEffect(() => {
+    document.documentElement.setAttribute(
+      "data-theme",
+      isDark ? "dark" : "light"
+    );
+  }, [isDark]);
 
   return (
     <label

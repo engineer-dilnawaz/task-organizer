@@ -1,7 +1,6 @@
 import { type FormEvent } from "react";
 import type { NewTask } from "../pages/Home";
 import { type Category } from "../stores/useCategories";
-import { useTasks } from "../stores/useTasks";
 
 type TaskFormProps = {
   newTask: NewTask;
@@ -22,7 +21,6 @@ export const TaskForm = ({
   categoriesList,
   isEditMode,
 }: TaskFormProps) => {
-  const addTask = useTasks((state) => state.addTask);
   return (
     <form
       onSubmit={onAddNewTask}
@@ -65,17 +63,6 @@ export const TaskForm = ({
 
       <button className="btn btn-neutral mt-4 w-full" type="submit">
         {isEditMode ? "Update Task" : "Add Task"}
-      </button>
-      <button
-        onClick={() => {
-          for (let i = 0; i < 30; i++) {
-            addTask({
-              task: `Task ${i}`,
-            });
-          }
-        }}
-      >
-        Add Dummy Task 30
       </button>
     </form>
   );

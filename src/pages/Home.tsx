@@ -6,6 +6,7 @@ import type { Task } from "../contexts/Tasks/Tasks";
 import { useCategoires } from "../stores/useCategories";
 import { useTasks } from "../stores/useTasks";
 import { QuickAction } from "../components/QuickAction";
+import { EmptyState } from "../components/EmptyState";
 
 export type NewTask = {
   taskText: string;
@@ -156,16 +157,20 @@ const Home = () => {
         isEditMode={Boolean(editingTaskId)}
       />
 
-      <TaskList
-        tasks={tasks}
-        onToggle={handleToggleCompletion}
-        onDelete={handleDeleteConfirmation}
-        onEdit={handleEdit}
-        editingTaskId={editingTaskId}
-        handleMarkAllTasks={handleMarkAllTasks}
-        handleMarkOrUnmarkTask={handleMarkOrUnmarkTask}
-        markedTasksList={markedTasksList}
-      />
+      {tasks.length === 0 ? (
+        <EmptyState />
+      ) : (
+        <TaskList
+          tasks={tasks}
+          onToggle={handleToggleCompletion}
+          onDelete={handleDeleteConfirmation}
+          onEdit={handleEdit}
+          editingTaskId={editingTaskId}
+          handleMarkAllTasks={handleMarkAllTasks}
+          handleMarkOrUnmarkTask={handleMarkOrUnmarkTask}
+          markedTasksList={markedTasksList}
+        />
+      )}
       <ConfirmationModal ref={modalRef} onDelete={handleDeleteTask} />
 
       {markedTasksList.length > 0 && (
