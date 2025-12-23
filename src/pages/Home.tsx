@@ -147,6 +147,9 @@ const Home = () => {
 
   return (
     <div className="flex flex-col items-center mt-4 mx-8">
+      <div role="alert" className="alert alert-warning alert-soft">
+        <span>Warning: TODO! API integration !</span>
+      </div>
       <TaskForm
         newTask={newTask}
         setNewTaskText={setNewTaskText}
