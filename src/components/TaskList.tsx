@@ -7,6 +7,9 @@ type TaskListProps = {
   onDelete?: (taskId: string) => void;
   onEdit?: (editingTask: TaskType) => void;
   editingTaskId?: string | null;
+  handleMarkAllTasks?: () => void;
+  handleMarkOrUnmarkTask?: (taskId: string) => void;
+  markedTasksList?: string[];
 };
 
 export const TaskList = ({
@@ -15,12 +18,28 @@ export const TaskList = ({
   onDelete,
   onToggle,
   editingTaskId,
+  handleMarkAllTasks,
+  markedTasksList,
+  handleMarkOrUnmarkTask,
 }: TaskListProps) => {
   return (
     <div className="overflow-x-auto w-full bg-base-200 mt-8">
       <table className="table">
         <thead>
           <tr>
+            <th>
+              <label>
+                <input
+                  type="checkbox"
+                  className="checkbox"
+                  checked={
+                    markedTasksList?.length !== 0 &&
+                    markedTasksList?.length === tasks.length
+                  }
+                  onChange={handleMarkAllTasks}
+                />
+              </label>
+            </th>
             <th>#</th>
             <th>Task</th>
             <th>Task Status</th>
@@ -39,6 +58,8 @@ export const TaskList = ({
               onDelete={onDelete}
               onEdit={onEdit}
               editingTaskId={editingTaskId}
+              isMarked={markedTasksList?.includes(task.id)}
+              handleMarkOrUnmarkTask={handleMarkOrUnmarkTask}
             />
           ))}
         </tbody>

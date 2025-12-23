@@ -8,8 +8,8 @@ import Home from "./pages/Home";
 import InCompleted from "./pages/InCompleted";
 
 import Header from "./components/Header";
-import Category from "./pages/Category";
 import { Stats } from "./components/Stats";
+import Category from "./pages/Category";
 import DragDrop from "./pages/DragDrop";
 
 const Body = () => {

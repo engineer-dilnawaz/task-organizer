@@ -8,6 +8,8 @@ type TaskProps = {
   onDelete?: (taskId: string) => void;
   onEdit?: (editingTask: TaskType) => void;
   editingTaskId?: string | null;
+  isMarked?: boolean;
+  handleMarkOrUnmarkTask?: (taskId: string) => void;
 };
 
 export const Task = ({
@@ -17,9 +19,21 @@ export const Task = ({
   onToggle,
   onDelete,
   editingTaskId,
+  isMarked,
+  handleMarkOrUnmarkTask,
 }: TaskProps) => {
   return (
     <tr>
+      <th>
+        <label>
+          <input
+            type="checkbox"
+            className="checkbox"
+            checked={isMarked}
+            onChange={() => handleMarkOrUnmarkTask?.(task.id)}
+          />
+        </label>
+      </th>
       <th>{index + 1}</th>
       <td>{task.task}</td>
       <td>

@@ -1,9 +1,10 @@
 import { useRef } from "react";
 
 import { Logo } from "./Logo";
-import { NavbarList } from "./NavBarList";
+
 import { ThemeSwitch } from "./ThemeSwitch";
 import { NavbarTrigger } from "./NavbarTrigger";
+import { NavbarList } from "./NavbarList";
 
 export default function Header() {
   const buttonRef = useRef<HTMLDivElement>(null);

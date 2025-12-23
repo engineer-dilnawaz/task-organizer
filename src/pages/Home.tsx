@@ -5,6 +5,7 @@ import { TaskList } from "../components/TaskList";
 import type { Task } from "../contexts/Tasks/Tasks";
 import { useCategoires } from "../stores/useCategories";
 import { useTasks } from "../stores/useTasks";
+import { QuickAction } from "../components/QuickAction";
 
 export type NewTask = {
   taskText: string;
@@ -15,6 +16,7 @@ export type NewTask = {
 const DEFAULT_CATEGORY = "Uncategorised";
 
 const Home = () => {
+  const [markedTasksList, setMarkedTasksList] = useState<string[]>([]);
   const [editingTaskId, setEditingTaskId] = useState<string | null>(null);
   const tasks = useTasks((state) => state.tasks);
   const addTask = useTasks((state) => state.addTask);
@@ -108,6 +110,40 @@ const Home = () => {
     });
   };
 
+  const handleMarkOrUnmarkTask = (taskId: string) => {
+    if (markedTasksList.includes(taskId)) {
+      handleUnmarkTasks(taskId);
+      return;
+    }
+    setMarkedTasksList((prev) => [...prev, taskId]);
+  };
+
+  const handleUnmarkTasks = (taskId: string) => {
+    setMarkedTasksList((prev) => prev.filter((id) => id !== taskId));
+  };
+
+  const handleMarkAllTasks = () => {
+    if (markedTasksList.length === tasks.length) {
+      setMarkedTasksList([]);
+      return;
+    }
+    setMarkedTasksList(tasks.map((task) => task.id));
+  };
+
+  const handleCompleteMarkedTasks = () => {
+    markedTasksList.forEach((taskId) => {
+      toggleTaskCompletion(taskId);
+    });
+    setMarkedTasksList([]);
+  };
+
+  const handleDeleteMarkedTasks = () => {
+    markedTasksList.forEach((taskId) => {
+      deleteTask(taskId);
+    });
+    setMarkedTasksList([]);
+  };
+
   return (
     <div className="flex flex-col items-center mt-4 mx-8">
       <TaskForm
@@ -126,8 +162,18 @@ const Home = () => {
         onDelete={handleDeleteConfirmation}
         onEdit={handleEdit}
         editingTaskId={editingTaskId}
+        handleMarkAllTasks={handleMarkAllTasks}
+        handleMarkOrUnmarkTask={handleMarkOrUnmarkTask}
+        markedTasksList={markedTasksList}
       />
       <ConfirmationModal ref={modalRef} onDelete={handleDeleteTask} />
+
+      {markedTasksList.length > 0 && (
+        <QuickAction
+          onComplete={handleCompleteMarkedTasks}
+          onDelete={handleDeleteMarkedTasks}
+        />
+      )}
     </div>
   );
 };

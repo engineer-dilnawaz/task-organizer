@@ -20,7 +20,7 @@ export default function ListContainer({
   });
 
   const borderColor = isOver ? "border-primary" : "border-base-300";
-  const bgColor = isOver ? "bg-base-200" : "bg-neutral";
+  const bgColor = isOver ? "bg-base-200" : "bg-base";
 
   return (
     <div

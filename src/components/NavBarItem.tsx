@@ -4,11 +4,12 @@ type NavBarItemProps = {
   to: `/${string}`;
   title: string;
   onClick?: () => void;
+  isNew?: boolean;
 };
 
-export const NavBarItem = ({ to, title, onClick }: NavBarItemProps) => {
+export const NavBarItem = ({ to, title, onClick, isNew }: NavBarItemProps) => {
   return (
-    <li>
+    <li className="">
       <Link
         to={to}
         onClick={() => {
@@ -17,6 +18,7 @@ export const NavBarItem = ({ to, title, onClick }: NavBarItemProps) => {
         }}
       >
         {title}
+        {isNew && <div className="badge badge-primary badge-sm">New</div>}
       </Link>
     </li>
   );

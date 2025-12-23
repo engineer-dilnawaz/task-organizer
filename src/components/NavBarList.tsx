@@ -17,6 +17,7 @@ export const NavbarList = ({ onLinkClick }: NavbarListProps) => {
           to={navbarItem.to}
           title={navbarItem.title}
           onClick={onLinkClick}
+          isNew={navbarItem?.isNew ?? false}
         />
       ))}
     </ul>

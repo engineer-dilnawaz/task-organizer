@@ -1,6 +1,7 @@
 export type NavbarItem = {
   to: `/${string}`;
   title: string;
+  isNew?: boolean;
 };
 
 export const navbarList: NavbarItem[] = [
@@ -27,5 +28,6 @@ export const navbarList: NavbarItem[] = [
   {
     to: "/dragdrop",
     title: "Drag & Drop",
+    isNew: true,
   },
 ];
