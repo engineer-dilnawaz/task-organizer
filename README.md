@@ -2,6 +2,10 @@
 
 A modern, feature-rich task management application built with React, TypeScript, and Tailwind CSS. Manage your tasks efficiently with drag-and-drop, bulk operations, categories, and more.
 
+## 🌐 Live Demo
+
+**Live Site:** [https://organize-task.netlify.app/](https://organize-task.netlify.app/)
+
 ## 🎥 Demo
 
 Watch a video demonstration of the application: [View Demo on Loom](https://www.loom.com/share/c898c7799270490283c860a79ac281d9)
