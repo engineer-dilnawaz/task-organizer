@@ -6,7 +6,7 @@ const cookieParser = require("cookie-parser");
 const dbConnect = require("./config/dbConnect");
 const taskRouter = require("./routes/task");
 const categoryRouter = require("./routes/category");
-
+const errorHandler = require("./middlewares/errorHandler");
 const app = express();
 
 app.use(
@@ -17,12 +17,12 @@ app.use(
 );
 
 app.use(express.json());
+app.use(cookieParser());
 
 app.use("/", taskRouter);
 app.use("/", categoryRouter);
 
-app.use(express.json());
-app.use(cookieParser());
+app.use(errorHandler);
 
 dbConnect().then(() => {
   app.listen(process.env.PORT, () => {
