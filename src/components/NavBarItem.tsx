@@ -7,7 +7,7 @@ type NavBarItemProps = {
   isNew?: boolean;
 };
 
-export const NavBarItem = ({ to, title, onClick, isNew }: NavBarItemProps) => {
+export const NavbarItem = ({ to, title, onClick, isNew }: NavBarItemProps) => {
   return (
     <li className="">
       <Link

@@ -1,5 +1,6 @@
 import { navbarList } from "../constants/navbar";
-import { NavBarItem } from "./NavBarItem";
+
+import { NavbarItem } from "./NavBarItem";
 
 type NavbarListProps = {
   onLinkClick: () => void;
@@ -12,7 +13,7 @@ export const NavbarList = ({ onLinkClick }: NavbarListProps) => {
       className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
     >
       {navbarList.map((navbarItem) => (
-        <NavBarItem
+        <NavbarItem
           key={navbarItem.to}
           to={navbarItem.to}
           title={navbarItem.title}
