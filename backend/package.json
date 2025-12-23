@@ -1,0 +1,21 @@
+{
+  "name": "task-organizer-be",
+  "version": "1.0.0",
+  "description": "This is my learning project to connect BE API with my FE using MERN Stack ",
+  "main": "index.js",
+  "author": "Dilnawaz Khan",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon src/app.js"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^9.0.0",
+    "validator": "^13.15.23"
+  }
+}
