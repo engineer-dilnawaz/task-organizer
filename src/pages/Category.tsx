@@ -1,4 +1,3 @@
-import { useState, type FormEvent } from "react";
 import {
   useCategoires,
   type Category as CategoryType,
@@ -6,36 +5,36 @@ import {
 import CategoryList from "../components/CategoryList";
 
 function Category() {
-  const [input, setInput] = useState("");
-  const isInputEmpty = !input.trim();
-  const addCategory = useCategoires().addCategory;
-  const deleteCategory = useCategoires().deleteCategory;
+  // const [input, setInput] = useState("");
+  // const isInputEmpty = !input.trim();
+  // const addCategory = useCategoires().addCategory;
+  // const deleteCategory = useCategoires().deleteCategory;
   const categories = useCategoires().categories;
 
-  const hasExistingCategory = categories.some(
-    (cat) => cat.name.toLocaleLowerCase() === input.trim().toLowerCase()
-  );
+  // const hasExistingCategory = categories.some(
+  //   (cat) => cat.name.toLocaleLowerCase() === input.trim().toLowerCase()
+  // );
 
-  const handleAddCategory = (e: FormEvent) => {
-    e.preventDefault();
-    if (isInputEmpty || hasExistingCategory) {
-      return;
-    }
-    addCategory(input);
-    setInput("");
-  };
+  // const handleAddCategory = (e: FormEvent) => {
+  //   e.preventDefault();
+  //   if (isInputEmpty || hasExistingCategory) {
+  //     return;
+  //   }
+  //   addCategory(input);
+  //   setInput("");
+  // };
 
-  const handleDeleteCategory = (id: string) => {
-    deleteCategory(id);
-  };
+  // const handleDeleteCategory = (id: string) => {
+  //   deleteCategory(id);
+  // };
 
   const shouldAllowDelete = (category: CategoryType) =>
     category.name.toLowerCase() === "Uncategorised".toLowerCase();
 
   return (
     <>
-      <div className="card bg-base-300 w-full max-w-sm shrink-0 shadow-2xl mx-auto mt-4">
-        <div className="card-body">
+      <div className="card bg-base-300 w-full max-w-sm shrink-0 shadow-2xl mx-auto mt-2">
+        {/* <div className="card-body">
           <fieldset className="fieldset">
             <label className="label" htmlFor="category-name-input">
               Category Name
@@ -63,12 +62,12 @@ function Category() {
               Add Category
             </button>
           </fieldset>
-        </div>
+        </div> */}
       </div>
       <CategoryList
         categories={categories}
         disableDelete={shouldAllowDelete}
-        onDelete={handleDeleteCategory}
+        onDelete={() => {}}
       />
     </>
   );

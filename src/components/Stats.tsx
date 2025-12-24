@@ -1,7 +1,8 @@
-import { useTasks } from "../stores/useTasks";
+import { useHome } from "../hooks/useHome";
+import { AnimatedCounter } from "./AnimatedCounter";
 
 export const Stats = () => {
-  const tasks = useTasks((state) => state.tasks);
+  const tasks = useHome().tasks ?? [];
   const totalTasks = tasks.length;
   const completedTasks = tasks.filter((task) => task.completed).length;
   return (
@@ -24,7 +25,7 @@ export const Stats = () => {
         </div>
         <div className="stat-title">Total Tasks</div>
         <div className="stat-value text-primary">
-          {totalTasks.toString().padStart(2, "0")}
+          <AnimatedCounter count={totalTasks} />
         </div>
         <div className="stat-desc">Total tasks added so far</div>
       </div>
@@ -47,7 +48,7 @@ export const Stats = () => {
         </div>
         <div className="stat-title">Completed Tasks</div>
         <div className="stat-value text-secondary">
-          {completedTasks.toString().padStart(2, "0")}
+          <AnimatedCounter count={completedTasks} />
         </div>
         <div className="stat-desc">Completed tasks so far</div>
       </div>
@@ -61,9 +62,14 @@ export const Stats = () => {
           </div>
         </div>
         <div className="stat-value">
-          {totalTasks === 0
-            ? "0%"
-            : `${((completedTasks / totalTasks) * 100).toFixed(0)}%`}
+          <AnimatedCounter
+            count={
+              totalTasks === 0
+                ? 0
+                : Number(((completedTasks / totalTasks) * 100).toFixed(0))
+            }
+            appendText="%"
+          />
         </div>
         <div className="stat-title">Tasks done</div>
         <div className="stat-desc text-secondary">

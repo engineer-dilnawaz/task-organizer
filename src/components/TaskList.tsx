@@ -1,4 +1,4 @@
-import type { Task as TaskType } from "../contexts/Tasks/Tasks";
+import type { Task as TaskType } from "../services/Task/tasks";
 import { Task } from "./Task";
 
 type TaskListProps = {
@@ -14,13 +14,8 @@ type TaskListProps = {
 
 export const TaskList = ({
   tasks,
-  onEdit,
-  onDelete,
-  onToggle,
-  editingTaskId,
   handleMarkAllTasks,
   markedTasksList,
-  handleMarkOrUnmarkTask,
 }: TaskListProps) => {
   return (
     <div className="overflow-x-auto w-full bg-base-200 mt-8">
@@ -51,15 +46,15 @@ export const TaskList = ({
         <tbody>
           {tasks.map((task, index) => (
             <Task
-              key={task.id}
+              key={task._id}
               index={index}
               task={task}
-              onToggle={onToggle}
-              onDelete={onDelete}
-              onEdit={onEdit}
-              editingTaskId={editingTaskId}
-              isMarked={markedTasksList?.includes(task.id)}
-              handleMarkOrUnmarkTask={handleMarkOrUnmarkTask}
+              onToggle={() => {}}
+              onDelete={() => {}}
+              onEdit={() => {}}
+              editingTaskId={null}
+              isMarked={false}
+              handleMarkOrUnmarkTask={() => {}}
             />
           ))}
         </tbody>

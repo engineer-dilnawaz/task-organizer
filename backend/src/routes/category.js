@@ -31,7 +31,13 @@ categoryRouter.get(
   "/categories",
   asyncHandler(async (req, res) => {
     const categories = await Category.find();
-    res.status(200).json(categories);
+    res.status(200).json({
+      data: categories,
+      message:
+        categories.length > 0
+          ? "Categories fetched successfully"
+          : "There are no categories available yet. Start adding some categories to your list!",
+    });
   })
 );
 

@@ -47,7 +47,13 @@ taskRouter.get(
   "/tasks",
   asyncHandler(async (_, res) => {
     const tasks = await Task.find().populate("category");
-    res.status(200).json(tasks);
+    res.status(200).json({
+      data: tasks,
+      message:
+        tasks.length > 0
+          ? "Tasks fetched successfully"
+          : "There are no tasks available yet. Start adding some tasks to your list!",
+    });
   })
 );
 

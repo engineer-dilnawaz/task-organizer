@@ -13,7 +13,7 @@ function CategoryList({
   disableDelete,
 }: CategoryListProps) {
   return (
-    <ul className="list bg-base-200 rounded-box shadow-md mt-12 mx-8">
+    <ul className="list bg-base-200 rounded-box shadow-md mx-8">
       <li className="p-4 pb-2 text-xs opacity-60 tracking-wide">
         All categories added so far
       </li>

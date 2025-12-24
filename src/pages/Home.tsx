@@ -1,189 +1,88 @@
-import { useRef, useState, type FormEvent } from "react";
-import { ConfirmationModal } from "../components/ConfirmationModal";
-import { TaskForm } from "../components/TaskForm";
-import { TaskList } from "../components/TaskList";
-import type { Task } from "../contexts/Tasks/Tasks";
-import { useCategoires } from "../stores/useCategories";
-import { useTasks } from "../stores/useTasks";
-import { QuickAction } from "../components/QuickAction";
-import { EmptyState } from "../components/EmptyState";
+import {
+  Check,
+  Hourglass,
+  NotepadText,
+  Plus,
+  Search,
+  TrendingUp,
+  type LucideProps,
+} from "lucide-react";
 
-export type NewTask = {
-  taskText: string;
-  taskCategory: string;
-  taskStatus: boolean;
-};
-
-const DEFAULT_CATEGORY = "Uncategorised";
-
-const Home = () => {
-  const [markedTasksList, setMarkedTasksList] = useState<string[]>([]);
-  const [editingTaskId, setEditingTaskId] = useState<string | null>(null);
-  const tasks = useTasks((state) => state.tasks);
-  const addTask = useTasks((state) => state.addTask);
-  const editTask = useTasks((state) => state.editTask);
-  const modalRef = useRef<HTMLDialogElement>(null);
-  const [deletingTaskId, setDeletingTaskId] = useState<string | null>(null);
-
-  const [newTask, setNewTask] = useState<NewTask>({
-    taskText: "",
-    taskCategory: DEFAULT_CATEGORY,
-    taskStatus: false,
-  });
-
-  const deleteTask = useTasks((state) => state.deleteTask);
-  const toggleTaskCompletion = useTasks((state) => state.toggleTaskCompletion);
-
-  const categories = useCategoires((state) => state.categories);
-
-  const setNewTaskText = (text: string) => {
-    setNewTask((prev) => ({ ...prev, taskText: text }));
-  };
-
-  const setNewTaskCategory = (category: string) => {
-    setNewTask((prev) => ({ ...prev, taskCategory: category }));
-  };
-
-  const setNewTaskStatus = (status: boolean) => {
-    setNewTask((prev) => ({ ...prev, taskStatus: status }));
-  };
-
-  const handleAddNewTask = (event: FormEvent) => {
-    event.preventDefault();
-    if (!newTask.taskText.trim()) {
-      return;
-    }
-
-    if (editingTaskId) {
-      editTask(editingTaskId, {
-        task: newTask.taskText,
-        category: newTask.taskCategory,
-        completed: newTask.taskStatus,
-      });
-      setEditingTaskId(null);
-    } else {
-      addTask({
-        task: newTask.taskText,
-        category: newTask.taskCategory,
-        completed: newTask.taskStatus,
-      });
-    }
-
-    setNewTask({
-      taskCategory: DEFAULT_CATEGORY,
-      taskStatus: false,
-      taskText: "",
-    });
-  };
-
-  const handleDeleteConfirmation = (taskId: string) => {
-    modalRef.current?.showModal();
-    setDeletingTaskId(taskId);
-  };
-
-  const handleDeleteTask = () => {
-    if (deletingTaskId) {
-      deleteTask(deletingTaskId);
-      setDeletingTaskId(null);
-      modalRef.current?.close();
-    }
-  };
-
-  const handleToggleCompletion = (taskId: string) => {
-    toggleTaskCompletion(taskId);
-  };
-
-  const handleEdit = (editingTask: Task) => {
-    if (editingTask.id === editingTaskId) {
-      setEditingTaskId(null);
-      setNewTask({
-        taskCategory: DEFAULT_CATEGORY,
-        taskStatus: false,
-        taskText: "",
-      });
-      return;
-    }
-    setEditingTaskId(editingTask.id);
-    setNewTask({
-      taskCategory: editingTask.category,
-      taskStatus: editingTask.completed,
-      taskText: editingTask.task,
-    });
-  };
-
-  const handleMarkOrUnmarkTask = (taskId: string) => {
-    if (markedTasksList.includes(taskId)) {
-      handleUnmarkTasks(taskId);
-      return;
-    }
-    setMarkedTasksList((prev) => [...prev, taskId]);
-  };
-
-  const handleUnmarkTasks = (taskId: string) => {
-    setMarkedTasksList((prev) => prev.filter((id) => id !== taskId));
-  };
-
-  const handleMarkAllTasks = () => {
-    if (markedTasksList.length === tasks.length) {
-      setMarkedTasksList([]);
-      return;
-    }
-    setMarkedTasksList(tasks.map((task) => task.id));
-  };
-
-  const handleCompleteMarkedTasks = () => {
-    markedTasksList.forEach((taskId) => {
-      toggleTaskCompletion(taskId);
-    });
-    setMarkedTasksList([]);
-  };
-
-  const handleDeleteMarkedTasks = () => {
-    markedTasksList.forEach((taskId) => {
-      deleteTask(taskId);
-    });
-    setMarkedTasksList([]);
-  };
-
+export default function Home() {
   return (
-    <div className="flex flex-col items-center mt-4 mx-8">
-      <div role="alert" className="alert alert-warning alert-soft">
-        <span>Warning: TODO! API integration !</span>
+    <div className="mx-8 my-4 flex flex-col gap-4 ">
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex flex-col">
+          <span className="text-2xl font-bold">Dashboard</span>
+          <span>
+            Welcome back, <span className="font-bold">Dilnawaz</span>
+          </span>
+        </div>
+
+        <form className="flex items-center gap-2">
+          <label className="input input-md outline-none">
+            <Search />
+            <input type="text" className="grow" placeholder="Search Tasks" />
+          </label>
+          <button className="btn btn-primary btn-md">
+            <Plus className="size-4" />
+            <span>New Task</span>
+          </button>
+        </form>
       </div>
-      <TaskForm
-        newTask={newTask}
-        setNewTaskText={setNewTaskText}
-        setNewTaskCategory={setNewTaskCategory}
-        setNewTaskStatus={setNewTaskStatus}
-        onAddNewTask={handleAddNewTask}
-        categoriesList={categories}
-        isEditMode={Boolean(editingTaskId)}
-      />
 
-      {tasks.length === 0 ? (
-        <EmptyState />
-      ) : (
-        <TaskList
-          tasks={tasks}
-          onToggle={handleToggleCompletion}
-          onDelete={handleDeleteConfirmation}
-          onEdit={handleEdit}
-          editingTaskId={editingTaskId}
-          handleMarkAllTasks={handleMarkAllTasks}
-          handleMarkOrUnmarkTask={handleMarkOrUnmarkTask}
-          markedTasksList={markedTasksList}
-        />
-      )}
-      <ConfirmationModal ref={modalRef} onDelete={handleDeleteTask} />
-
-      {markedTasksList.length > 0 && (
-        <QuickAction
-          onComplete={handleCompleteMarkedTasks}
-          onDelete={handleDeleteMarkedTasks}
-        />
-      )}
+      <div className="flex flex-wrap gap-4">
+        <StatsCard title="Total" Icon={NotepadText} color="primary">
+          <div className="flex items-center gap-2">
+            <span className="text-2xl font-bold">{100}</span>
+            <div className="flex items-end gap-1 text-success text-sm">
+              <TrendingUp className="size-4" />
+              <span className="text-sm">+{10}%</span>
+            </div>
+          </div>
+        </StatsCard>
+        <StatsCard title="Completed" Icon={Check} color="success">
+          <div className="flex items-center gap-2">
+            <span className="text-2xl font-bold ">{32}</span>
+            <div className="flex items-center gap-1 text-success text-sm">
+              <span>+4 Today</span>
+            </div>
+          </div>
+        </StatsCard>
+        <StatsCard title="Pending" Icon={Hourglass} color="warning">
+          <div className="flex items-end gap-2">
+            <span className="text-2xl font-bold ">{6}</span>
+            <span className="text-xs text-zinc-600">overdue</span>
+          </div>
+        </StatsCard>
+        <StatsCard title="Progress" Icon={Hourglass} color="warning">
+          <></>
+        </StatsCard>
+      </div>
     </div>
   );
-};
+}
 
-export default Home;
+interface StatsProps {
+  title: string;
+  Icon: React.ForwardRefExoticComponent<
+    Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>
+  >;
+  color: "primary" | "success" | "warning" | "info" | "neutral";
+  children: React.ReactNode;
+}
+function StatsCard({ title, Icon, color, children }: StatsProps) {
+  return (
+    <div className="card rounded-md bg-base-200 flex-1 shrink-0  min-w-[300px]">
+      <div className="card-body">
+        <div className="flex items-center justify-between capitalize text-sm text-zinc-600">
+          <h2>{title}</h2>
+          <div className={`bg-${color}/20 rounded-full p-1`}>
+            <Icon className={`size-4 text-${color}`} />
+          </div>
+        </div>
+        <div className="card-actions">{children}</div>
+      </div>
+    </div>
+  );
+}

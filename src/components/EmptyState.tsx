@@ -1,10 +1,11 @@
-export const EmptyState = () => {
+type EmptyStateProps = {
+  message?: string;
+};
+
+export const EmptyState = ({ message }: EmptyStateProps) => {
   return (
-    <div className="card bg-base-200 text-base-content w-full h-32  mt-8">
-      <div className="card-body items-center text-center">
-        <h2 className="card-title">No tasks found</h2>
-        <p>Add a new task to get started</p>
-      </div>
+    <div role="alert" className="alert alert-error alert-soft w-full ">
+      <span className="place-items-center">{message || "No tasks found."}</span>
     </div>
   );
 };

@@ -1,26 +1,23 @@
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { createBrowserRouter, Outlet } from "react-router";
 import { RouterProvider } from "react-router/dom";
 
-import All from "./pages/All";
-import Completed from "./pages/Completed";
-import Counter from "./pages/Counter";
 import Home from "./pages/Home";
-import InCompleted from "./pages/InCompleted";
 
-import Header from "./components/Header";
-import { Stats } from "./components/Stats";
+// import Header from "./components/Header";
+// import { Stats } from "./components/Stats";
+import { AppSidebar } from "./components/Sidebar";
 import Category from "./pages/Category";
-import DragDrop from "./pages/DragDrop";
+import Trash from "./pages/Trash";
+import MyTasks from "./pages/MyTasks";
 
 const Body = () => {
   return (
-    <div className="flex flex-col h-screen overflow-hidden">
-      <Header />
-      <div className="flex-1 overflow-y-auto overflow-x-hidden scroll-smooth pb-32">
+    <AppSidebar>
+      <div className="flex-1 overflow-y-auto overflow-x-hidden scroll-smooth">
         <Outlet />
       </div>
-      <Stats />
-    </div>
+    </AppSidebar>
   );
 };
 
@@ -35,33 +32,26 @@ function App() {
           element: <Home />,
         },
         {
-          path: "/all",
-          element: <All />,
-        },
-        {
-          path: "/completed",
-          element: <Completed />,
-        },
-        {
-          path: "/incompleted",
-          element: <InCompleted />,
-        },
-        {
-          path: "/counter",
-          element: <Counter />,
+          path: "/my-tasks",
+          element: <MyTasks />,
         },
         {
           path: "/category",
           element: <Category />,
         },
         {
-          path: "/dragdrop",
-          element: <DragDrop />,
+          path: "/trash",
+          element: <Trash />,
         },
       ],
     },
   ]);
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <RouterProvider router={router} />
+      <ReactQueryDevtools initialIsOpen={false} />
+    </>
+  );
 }
 
 export default App;

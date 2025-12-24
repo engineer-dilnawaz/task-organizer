@@ -10,6 +10,11 @@ export const navbarList: NavbarItem[] = [
     title: "All",
   },
   {
+    to: "/add-task",
+    title: "Add Task",
+    isNew: true,
+  },
+  {
     to: "/completed",
     title: "Completed",
   },
